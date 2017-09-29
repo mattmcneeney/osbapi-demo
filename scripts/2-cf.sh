@@ -14,7 +14,7 @@ cd demo
 clear
 
 # put your stuff here
-pe "BROKER_URL=http://$(cf app overview-broker | awk '/urls:/{ print $2 }')"
+pe "BROKER_URL=http://$(cf app overview-broker-cf-summit | awk '/urls:/{ print $2 }')"
 pe "cf create-service-broker overview-broker admin password ${BROKER_URL}"
 pe "cf enable-service-access overview-broker"
 pe "cf marketplace"

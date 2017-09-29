@@ -11,8 +11,11 @@
 #
 ###############################################################################
 
+# demo prompt
+DEMO_PROMPT="$ "
+
 # the speed to "type" the text
-TYPE_SPEED=20
+TYPE_SPEED=50
 
 # no wait after "p" or "pe"
 NO_WAIT=false

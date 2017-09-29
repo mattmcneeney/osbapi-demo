@@ -17,4 +17,4 @@ clear
 p "git clone git@github.com:mattmcneeney/overview-broker.git"
 pe "cd overview-broker"
 pe "ls"
-pe "cf push overview-broker --random-route"
+pe "cf push overview-broker-cf-summit"

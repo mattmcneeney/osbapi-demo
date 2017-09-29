@@ -26,10 +26,20 @@ cf services | grep "my-service" > /dev/null &&
    exit 1
 )
 
-cf target | grep "User:" | grep "admin" > /dev/null ||
+cf target | grep -i "User:" | grep "admin" > /dev/null ||
 (
    echo "WARNING: Not admin"
    exit 1
 )
+
+if [ ! -d ~/workspace/apps/overview-broker ]; then
+   echo "WARNING: ~/workspace/apps/overview-broker not found"
+   exit 1
+fi
+
+if [ ! -d ~/workspace/apps/extremely-basic-node-app ]; then
+   echo "WARNING: ~/workspace/apps/extremely-basic-node-appp not found"
+   exit 1
+fi
 
 echo "Ready!"
