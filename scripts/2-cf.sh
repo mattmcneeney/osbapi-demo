@@ -3,12 +3,13 @@
 ########################
 # include the magic
 ########################
-. scripts/resources/demo-magic.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. ${DIR}/resources/demo-magic.sh
 
 # secret setup
-mkdir -p demo/extremely-basic-node-app
-cp -r ~/workspace/apps/extremely-basic-node-app/* demo/extremely-basic-node-app/
-cd demo
+mkdir -p /tmp/demo/extremely-basic-node-app
+cp -r ~/workspace/apps/extremely-basic-node-app/* /tmp/demo/extremely-basic-node-app/
+cd /tmp/demo
 
 # hide the evidence
 clear
@@ -31,3 +32,4 @@ pe "open '${BROKER_URL}'"
 pe "cf unbind-service extremely-basic-node-app my-service"
 pe "cf delete-service -f my-service"
 pe "open '${BROKER_URL}'"
+

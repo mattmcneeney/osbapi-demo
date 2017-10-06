@@ -3,12 +3,13 @@
 ########################
 # include the magic
 ########################
-. scripts/resources/demo-magic.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. ${DIR}/resources/demo-magic.sh
 
 # secret setup
-mkdir -p demo/overview-broker
-cp -r ~/workspace/apps/overview-broker/* demo/overview-broker/
-cd demo
+mkdir -p /tmp/demo/overview-broker
+cp -r ~/workspace/apps/overview-broker/* /tmp/demo/overview-broker/
+cd /tmp/demo
 
 # hide the evidence
 clear
@@ -18,3 +19,4 @@ p "git clone git@github.com:mattmcneeney/overview-broker.git"
 pe "cd overview-broker"
 pe "ls"
 pe "cf push overview-broker-cf-summit"
+
