@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 echo "Checking k8s environment is clean and ready..."
 
@@ -10,7 +10,9 @@ minikube start
 #DEPLOY the service-catalog
 #Use helm to setup the components
 helm init
+sleep 30
 helm install charts/catalog --name catalog --namespace catalog
+sleep 30
 
 #FIND service catalog api endpoint 
 SVC_CAT_API=$(minikube service -n catalog catalog-catalog-apiserver --url | sed -n 1p)

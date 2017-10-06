@@ -4,5 +4,5 @@ metadata:
   name: overview-instance
   namespace: development
 spec:
-  serviceClassName: overview-broker
+  serviceClassName: overview-broker-cf-summit
   planName: simple
