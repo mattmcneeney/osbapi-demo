@@ -15,7 +15,7 @@
 DEMO_PROMPT="$ "
 
 # the speed to "type" the text
-TYPE_SPEED=50
+TYPE_SPEED=35
 
 # no wait after "p" or "pe"
 NO_WAIT=false
@@ -105,6 +105,7 @@ function p() {
 function pe() {
   # print the command
   p "$@"
+  echo ""
 
   # execute the command
   eval "$@"

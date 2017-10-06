@@ -15,21 +15,20 @@ cd /tmp/demo
 clear
 
 # put your stuff here
-pe "BROKER_URL=http://$(cf app overview-broker-cf-summit | awk '/urls:/{ print $2 }')"
-pe "cf create-service-broker overview-broker admin password ${BROKER_URL}"
-pe "cf enable-service-access overview-broker"
-pe "cf marketplace"
-pe "cf create-service overview-broker simple my-service"
-pe "cf services"
+BROKER_URL=http://$(cf app overview-broker-cf-summit | awk '/urls:/{ print $2 }')
 pe "open '${BROKER_URL}'"
+pe "cf marketplace"
+pe "cf create-service-broker overview-broker-cf-summit admin password ${BROKER_URL}"
+pe "cf enable-service-access overview-broker-cf-summit"
+pe "cf marketplace"
+pe "cf create-service overview-broker-cf-summit simple my-service"
+pe "cf services"
 p "git clone git@github.com:mattmcneeney/extremely-basic-node-app.git"
 pe "cd extremely-basic-node-app"
 pe "cf push"
 pe "cf bind-service extremely-basic-node-app my-service"
 pe "cf restart extremely-basic-node-app"
 pe "cf env extremely-basic-node-app"
-pe "open '${BROKER_URL}'"
 pe "cf unbind-service extremely-basic-node-app my-service"
 pe "cf delete-service -f my-service"
-pe "open '${BROKER_URL}'"
 
