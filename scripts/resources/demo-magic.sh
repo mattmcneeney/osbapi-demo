@@ -91,7 +91,7 @@ function p() {
   if !($NO_WAIT); then
     wait
   fi
-  echo ""
+  echo -e ""
 }
 
 ##
@@ -109,6 +109,8 @@ function pe() {
 
   # execute the command
   eval "$@"
+
+  echo ""
 }
 
 ##
