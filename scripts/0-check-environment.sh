@@ -8,9 +8,9 @@ cf apps | grep "overview-broker-cf-summit" > /dev/null ||
    exit 1
 )
 
-cf apps | grep "extremely-basic-node-app" > /dev/null &&
+cf apps | grep "extremely-basic-node-app" > /dev/null ||
 (
-   echo "WARNING: extremely-basic-node-app app exists" &&
+   echo "WARNING: extremely-basic-node-app app does not exist" &&
    exit 1
 )
 
