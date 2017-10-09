@@ -2,9 +2,9 @@
 
 echo "Checking environment is clean and ready..."
 
-cf apps | grep "overview-broker-cf-summit" > /dev/null &&
+cf apps | grep "overview-broker-cf-summit" > /dev/null ||
 (
-   echo "WARNING: overview-broker-cf-summit app exists" &&
+   echo "WARNING: overview-broker-cf-summit app does not exist" &&
    exit 1
 )
 
