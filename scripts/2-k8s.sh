@@ -28,7 +28,7 @@ pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-broker
 #GET the service class for the ${DIR}/resources/overview-broker service
 #This shows details of the service and plans available
 pe "kubectl --context=service-catalog get serviceclasses"
-pe "kubectl --context=service-catalog get serviceclass overview-broker-cf-summit -o yaml"
+pe "kubectl --context=service-catalog get serviceclass overview-broker-cf-summit -o yaml | less"
 
 #CREATE a namespace for development
 #All of our service instances and bindings will live here
@@ -40,7 +40,7 @@ pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-instan
 
 #GET the service instance
 pe "kubectl --context=service-catalog -n development get instances"
-pe "kubectl --context=service-catalog -n development get instances -o yaml"
+pe "kubectl --context=service-catalog -n development get instances -o yaml | less"
 
 #CREATE a binding to the instance
 pe "less ${DIR}/resources/overview-binding.yaml"
@@ -48,14 +48,13 @@ pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-bindin
 
 #GET the service binding
 pe "kubectl --context=service-catalog -n development get binding"
-pe "kubectl --context=service-catalog -n development get binding  -o yaml"
+pe "kubectl --context=service-catalog -n development get binding  -o yaml | less"
 
 #GET the secret
 pe "kubectl get secrets -n development"
-pe "kubectl get secrets -n development overview-credentials -o yaml"
+pe "kubectl get secrets -n development overview-credentials -o yaml | less"
 
 #DELETE the binding
-pe "kubectl --context=service-catalog -n development get binding"
 pe "kubectl --context=service-catalog -n development delete binding overview-binding"
 
 #SEE binding and secret has gone
@@ -63,4 +62,4 @@ pe "kubectl --context=service-catalog -n development get binding"
 pe "kubectl get secrets -n development"
 
 #DELETE the instance
-pe "kubectl --context=service-catalog -n development delete binding overview-binding"
+pe "kubectl --context=service-catalog -n development delete instance overview-instance"
