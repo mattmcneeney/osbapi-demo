@@ -22,7 +22,7 @@ clear
 pe "kubectl --context=service-catalog get brokers,serviceclasses,instances,bindings"
 
 #REGISTER a broker - we will use the earlier deployed regis
-pe "cat ${DIR}/resources/overview-broker.yaml"
+pe "less ${DIR}/resources/overview-broker.yaml"
 pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-broker.yaml"
 
 #GET the service class for the ${DIR}/resources/overview-broker service
@@ -35,7 +35,7 @@ pe "kubectl --context=service-catalog get serviceclass overview-broker-cf-summit
 pe "kubectl create ns development"
 
 # #CREATE a service instance on the default plan
-pe "cat ${DIR}/resources/overview-instance.yaml"
+pe "less ${DIR}/resources/overview-instance.yaml"
 pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-instance.yaml"
 
 #GET the service instance
@@ -43,7 +43,7 @@ pe "kubectl --context=service-catalog -n development get instances"
 pe "kubectl --context=service-catalog -n development get instances -o yaml"
 
 #CREATE a binding to the instance
-pe "cat ${DIR}/resources/overview-binding.yaml"
+pe "less ${DIR}/resources/overview-binding.yaml"
 pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-binding.yaml"
 
 #GET the service binding
