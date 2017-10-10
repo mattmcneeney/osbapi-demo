@@ -2,5 +2,4 @@
 
 cf delete-service -f my-service
 cf delete-service-broker -f overview-broker-cf-summit
-rm -r /tmp/demo
 
