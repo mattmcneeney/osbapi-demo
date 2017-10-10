@@ -36,10 +36,6 @@ clean
 
 pe "cf apps"
 pe "cf bind-service extremely-basic-node-app my-service"
-pe "cf restart extremely-basic-node-app"
-
-clean
-
 pe "cf env extremely-basic-node-app | less"
 
 clean
