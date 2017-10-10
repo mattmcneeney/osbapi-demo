@@ -54,8 +54,6 @@ pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-bindin
 # get the service binding
 pe "kubectl --context=service-catalog -n development get binding  -o yaml | less"
 
-clean
-
 # get the secret
 pe "kubectl get secrets -n development"
 pe "kubectl get secrets -n development overview-credentials -o yaml | less"
@@ -63,9 +61,6 @@ pe "kubectl get secrets -n development overview-credentials -o yaml | less"
 clean
 
 pe "kubectl --context=service-catalog -n development delete binding overview-binding"
-
-# show secret has gone
-pe "kubectl get secrets -n development"
 
 # delete the instance
 pe "kubectl --context=service-catalog -n development delete instance overview-instance"
