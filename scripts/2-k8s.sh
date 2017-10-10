@@ -6,11 +6,11 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . ${DIR}/resources/demo-magic.sh
 
-#GET the address of the controller
+# get the address of the controller
 SVC_CAT_API=$(minikube service -n catalog catalog-catalog-apiserver --url | sed -n 1p)
 echo $SVC_CAT_API
 
-#CREATE a new kubectl context
+# create a new kubectl context
 kubectl config set-cluster service-catalog --server=$SVC_CAT_API
 kubectl config set-context service-catalog --cluster=service-catalog
 
@@ -18,48 +18,60 @@ kubectl config set-context service-catalog --cluster=service-catalog
 clear
 
 # put your stuff here
-#SEE no broker has yet been registered
+# show no broker has yet been registered
 pe "kubectl --context=service-catalog get brokers,serviceclasses,instances,bindings"
 
-#REGISTER a broker - we will use the earlier deployed regis
+p "clear"
+
+# register a broker
 pe "less ${DIR}/resources/overview-broker.yaml"
 pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-broker.yaml"
 
-#GET the service class for the ${DIR}/resources/overview-broker service
-#This shows details of the service and plans available
+p "clear"
+
+# get the service class for the exposed services
 pe "kubectl --context=service-catalog get serviceclasses"
 pe "kubectl --context=service-catalog get serviceclass overview-broker-cf-summit -o yaml | less"
 
-#CREATE a namespace for development
-#All of our service instances and bindings will live here
+p "clear"
+# create a namespace for development
 pe "kubectl create ns development"
 
-# #CREATE a service instance on the default plan
+# create a service instance
 pe "less ${DIR}/resources/overview-instance.yaml"
 pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-instance.yaml"
 
-#GET the service instance
+p "clear"
+
+# get the service instance
 pe "kubectl --context=service-catalog -n development get instances"
 pe "kubectl --context=service-catalog -n development get instances -o yaml | less"
 
-#CREATE a binding to the instance
+p "clear"
+
+# create a service binding
 pe "less ${DIR}/resources/overview-binding.yaml"
 pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-binding.yaml"
 
-#GET the service binding
+p "clear"
+
+# get the service binding
 pe "kubectl --context=service-catalog -n development get binding"
 pe "kubectl --context=service-catalog -n development get binding  -o yaml | less"
 
-#GET the secret
+p "clear"
+
+# get the secret
 pe "kubectl get secrets -n development"
 pe "kubectl get secrets -n development overview-credentials -o yaml | less"
 
-#DELETE the binding
+p "clear"
+
 pe "kubectl --context=service-catalog -n development delete binding overview-binding"
 
-#SEE binding and secret has gone
-pe "kubectl --context=service-catalog -n development get binding"
+# show secret has gone
 pe "kubectl get secrets -n development"
 
-#DELETE the instance
+# delete the instance
 pe "kubectl --context=service-catalog -n development delete instance overview-instance"
+
