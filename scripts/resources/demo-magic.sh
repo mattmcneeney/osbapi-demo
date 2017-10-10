@@ -95,6 +95,17 @@ function p() {
 }
 
 ##
+# Clean the terminal
+#
+# usage: clean
+#
+##
+function clean() {
+  wait
+  clear
+}
+
+##
 # Prints and executes a command
 #
 # takes 1 parameter - the string command to run

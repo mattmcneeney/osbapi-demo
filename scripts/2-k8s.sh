@@ -21,19 +21,19 @@ clear
 # show no broker has yet been registered
 pe "kubectl --context=service-catalog get brokers,serviceclasses,instances,bindings"
 
-p "clear"
+clean
 
 # register a broker
 pe "less ${DIR}/resources/overview-broker.yaml"
 pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-broker.yaml"
 
-p "clear"
+clean
 
 # get the service class for the exposed services
 pe "kubectl --context=service-catalog get serviceclasses"
 pe "kubectl --context=service-catalog get serviceclass overview-broker-cf-summit -o yaml | less"
 
-p "clear"
+clean
 # create a namespace for development
 pe "kubectl create ns development"
 
@@ -41,31 +41,31 @@ pe "kubectl create ns development"
 pe "less ${DIR}/resources/overview-instance.yaml"
 pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-instance.yaml"
 
-p "clear"
+clean
 
 # get the service instance
 pe "kubectl --context=service-catalog -n development get instances"
 pe "kubectl --context=service-catalog -n development get instances -o yaml | less"
 
-p "clear"
+clean
 
 # create a service binding
 pe "less ${DIR}/resources/overview-binding.yaml"
 pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-binding.yaml"
 
-p "clear"
+clean
 
 # get the service binding
 pe "kubectl --context=service-catalog -n development get binding"
 pe "kubectl --context=service-catalog -n development get binding  -o yaml | less"
 
-p "clear"
+clean
 
 # get the secret
 pe "kubectl get secrets -n development"
 pe "kubectl get secrets -n development overview-credentials -o yaml | less"
 
-p "clear"
+clean
 
 pe "kubectl --context=service-catalog -n development delete binding overview-binding"
 
