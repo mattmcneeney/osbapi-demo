@@ -19,7 +19,7 @@ clear
 
 # put your stuff here
 # show no broker has yet been registered
-pe "kubectl --context=service-catalog get brokers,serviceclasses,instances,bindings"
+pe "kubectl --context=service-catalog get brokers,serviceclasses"
 
 clean
 
@@ -34,6 +34,7 @@ pe "kubectl --context=service-catalog get serviceclasses"
 pe "kubectl --context=service-catalog get serviceclass overview-broker-cf-summit -o yaml | less"
 
 clean
+
 # create a namespace for development
 pe "kubectl create ns development"
 
@@ -41,10 +42,7 @@ pe "kubectl create ns development"
 pe "less ${DIR}/resources/overview-instance.yaml"
 pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-instance.yaml"
 
-clean
-
 # get the service instance
-pe "kubectl --context=service-catalog -n development get instances"
 pe "kubectl --context=service-catalog -n development get instances -o yaml | less"
 
 clean
@@ -53,10 +51,7 @@ clean
 pe "less ${DIR}/resources/overview-binding.yaml"
 pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-binding.yaml"
 
-clean
-
 # get the service binding
-pe "kubectl --context=service-catalog -n development get binding"
 pe "kubectl --context=service-catalog -n development get binding  -o yaml | less"
 
 clean
