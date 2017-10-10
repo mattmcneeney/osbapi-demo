@@ -40,7 +40,7 @@ pe "cf restart extremely-basic-node-app"
 
 clean
 
-pe "cf env extremely-basic-node-app"
+pe "cf env extremely-basic-node-app | less"
 
 clean
 
