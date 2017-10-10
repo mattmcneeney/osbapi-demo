@@ -6,11 +6,6 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . ${DIR}/resources/demo-magic.sh
 
-# secret setup
-mkdir -p /tmp/demo/extremely-basic-node-app
-cp -r ~/workspace/apps/extremely-basic-node-app/* /tmp/demo/extremely-basic-node-app/
-cd /tmp/demo
-
 # hide the evidence
 clear
 
