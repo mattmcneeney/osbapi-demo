@@ -12,7 +12,6 @@ clear
 # put your stuff here
 BROKER_URL=http://$(cf app overview-broker-cf-summit | awk '/urls:/{ print $2 }')
 pe "cf apps"
-pe "open '${BROKER_URL}'"
 
 clean
 
