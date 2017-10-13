@@ -2,9 +2,9 @@
 
 echo "Checking environment is clean and ready..."
 
-cf apps | grep "overview-broker-cf-summit" > /dev/null ||
+cf apps | grep "overview-broker-demo" > /dev/null ||
 (
-   echo "WARNING: overview-broker-cf-summit app does not exist" &&
+   echo "WARNING: overview-broker-demo app does not exist" &&
    exit 1
 )
 
@@ -31,15 +31,5 @@ cf target | grep -i "User:" | grep "admin" > /dev/null ||
    echo "WARNING: Not admin"
    exit 1
 )
-
-if [ ! -d ~/workspace/apps/overview-broker ]; then
-   echo "WARNING: ~/workspace/apps/overview-broker not found"
-   exit 1
-fi
-
-if [ ! -d ~/workspace/apps/extremely-basic-node-app ]; then
-   echo "WARNING: ~/workspace/apps/extremely-basic-node-appp not found"
-   exit 1
-fi
 
 echo "Ready!"

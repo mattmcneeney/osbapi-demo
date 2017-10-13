@@ -31,7 +31,7 @@ clean
 
 # get the service class for the exposed services
 pe "kubectl --context=service-catalog get serviceclasses"
-pe "kubectl --context=service-catalog get serviceclass overview-broker-cf-summit -o yaml | less"
+pe "kubectl --context=service-catalog get serviceclass overview-broker-demo -o yaml | less"
 
 clean
 
@@ -64,4 +64,3 @@ pe "kubectl --context=service-catalog -n development delete binding overview-bin
 
 # delete the instance
 pe "kubectl --context=service-catalog -n development delete instance overview-instance"
-
