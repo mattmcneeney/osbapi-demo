@@ -38,5 +38,5 @@ pe "cf service-key my-service my-key"
 
 clean
 
-pe "cf delete-service-key my-service my-key"
+pe "cf delete-service-key -f my-service my-key"
 pe "cf delete-service -f my-service"
