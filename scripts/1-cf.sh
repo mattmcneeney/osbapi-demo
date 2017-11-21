@@ -20,7 +20,7 @@ pe "cf marketplace"
 clean
 
 pe "cf create-service-broker $SERVICE_BROKER_NAME admin ${BROKER_PASSWORD} ${BROKER_URL}"
-pe "cf enable-service-access $SERVICE_BROKER_NAME"
+pe "cf enable-service-access $SERVICE_NAME"
 
 clean
 
@@ -28,7 +28,7 @@ pe "cf marketplace"
 
 clean
 
-pe "cf create-service $SERVICE_BROKER_NAME simple $SERVICE_INSTANCE_NAME"
+pe "cf create-service $SERVICE_NAME $SERVICE_PLAN_NAME $SERVICE_INSTANCE_NAME"
 pe "cf services"
 
 clean

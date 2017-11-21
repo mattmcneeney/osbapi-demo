@@ -30,7 +30,7 @@ cat >/tmp/k8s-resources/broker.yaml <<EOL
 apiVersion: servicecatalog.k8s.io/v1alpha1
 kind: Broker
 metadata:
-  name: overview-broker
+  name: $SERVICE_BROKER_NAME
 spec:
   url: $BROKER_URL
 EOL
@@ -41,7 +41,7 @@ clean
 
 # get the service class for the exposed services
 pe "kubectl --context=service-catalog get serviceclasses"
-pe "kubectl --context=service-catalog get serviceclass $SERVICE_BROKER_NAME -o yaml | less"
+pe "kubectl --context=service-catalog get serviceclass $SERVICE_NAME -o yaml | less"
 
 clean
 
@@ -56,8 +56,8 @@ metadata:
   name: $SERVICE_INSTANCE_NAME
   namespace: development
 spec:
-  serviceClassName: $SERVICE_BROKER_NAME
-  planName: $PLAN_NAME
+  serviceClassName: $SERVICE_NAME
+  planName: $SERVICE_PLAN_NAME
 EOL
 pe "less /tmp/k8s-resources/instance.yaml"
 pe "kubectl --context=service-catalog create -f /tmp/k8s-resources/instance.yaml"
