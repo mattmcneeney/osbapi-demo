@@ -14,5 +14,7 @@ done
 
 if [ -z $ERRORS ]; then
    echo "Environment ready!"
+else
+   exit 1
 fi
 

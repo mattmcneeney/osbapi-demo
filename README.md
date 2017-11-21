@@ -15,37 +15,35 @@ they were created from.
 
 ### Preparation
 ```
-# Checkout and deploy overview broker (the service broker)
+# Checkout and deploy overview broker (service broker)
 git clone git@github.com:mattmcneeney/overview-broker.git
 cd overview-broker
 cf push overview-broker-demo
 
-# Edit the .envrc file and populate your environment variables. For example:
-export SERVICE_BROKER_APP_NAME=overview-broker-demo
-export SERVICE_BROKER_NAME=overview-broker-demo
-export SERVICE_INSTANCE_NAME=my-service
-export SERVICE_BINDING_NAME=my-binding
-export CREDENTIALS_NAME=my-secret
+# Update .envrc file with your desired environment variables
 
-# Source the environment variable file
-. .envrc
+# Source the environment variables
+source .envrc
 
-# Check your environment is ready to go
-./scripts/0-check-environment.sh
-./scripts/0-check-cf-environment.sh
-./scripts/0-check-k8s-environment.sh
+# If you're setting up minikube or the service-catalog project for the first
+# time, then this setup script may help you get up and running:
+./scripts/k8s/setup-env.sh
+
+# Check your environments are ready to go
+./scripts/cf/check-env.sh
+./scripts/k8s/check-env.sh
 ```
 
 ### Demo scripts
-For best results, run these in side-by-side terminals! Simply hit enter to
-print and then execute the next command in each script.
+For best results, run the two demo scripts in side-by-side terminals! Simply hit
+enter to print and then execute the next command in each script.
 ```
-./scripts/1-cf.sh
-./scripts/2-k8s.sh
+./scripts/cf/demo.sh
+./scripts/k8s/demo.sh
 ```
 
 ### Cleanup
 ```
-./scripts/0-cleanup-cf.sh
-./scripts/0-cleanup-k8s.sh
+./scripts/cf/cleanup.sh
+./scripts/k8s/cleanup.sh
 ```
