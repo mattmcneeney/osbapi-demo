@@ -12,7 +12,7 @@ clear
 # create a namespace
 kubectl create namespace $NAMESPACE
 
-BROKER_URL=http://$(cf app $SERVICE_BROKER_APP_NAME | awk '/urls:/{ print $2 }')
+BROKER_URL=http://$(cf app $SERVICE_BROKER_APP_NAME | awk '/routes:/{ print $2 }')
 
 # create the broker secret
 cat >/tmp/k8s-resources/broker-secret.yaml <<EOL
@@ -95,7 +95,7 @@ pe "less /tmp/k8s-resources/binding.yaml"
 pe "kubectl create -f /tmp/k8s-resources/binding.yaml"
 
 # get the service binding
-pe "kubectl -n $NAMESPACE get servicebindings  -o yaml | less"
+pe "kubectl -n $NAMESPACE get servicebindings -o yaml | less"
 
 # get the secret
 pe "kubectl get secrets -n $NAMESPACE"
