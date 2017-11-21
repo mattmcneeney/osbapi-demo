@@ -10,7 +10,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 clear
 
 # create a namespace
-kubectl create ns $NAMESPACE
+kubectl create namespace $NAMESPACE
 
 BROKER_URL=http://$(cf app $SERVICE_BROKER_APP_NAME | awk '/urls:/{ print $2 }')
 
