@@ -24,12 +24,15 @@ cf push overview-broker-demo
 # of the service broker you have deployed
 sed -i -e 's/\$URL/YOUR-BROKER-URL/g' ./scripts/resources/overview-broker.yaml
 
-# Set your environmental variables, for example:
-SERVICE_BROKER_APP_NAME=overview-broker-demo
-SERVICE_BROKER_NAME=overview-broker-demo
-SERVICE_INSTANCE_NAME=my-service
-SERVICE_BINDING_NAME=my-binding
-CREDENTIALS_NAME=my-secret
+# Edit the .envrc file and populate your environment variables. For example:
+export SERVICE_BROKER_APP_NAME=overview-broker-demo
+export SERVICE_BROKER_NAME=overview-broker-demo
+export SERVICE_INSTANCE_NAME=my-service
+export SERVICE_BINDING_NAME=my-binding
+export CREDENTIALS_NAME=my-secret
+
+# Source the environment variable file
+. .envrc
 
 # Check your environment is ready to go
 ./scripts/0-check-environment.sh
