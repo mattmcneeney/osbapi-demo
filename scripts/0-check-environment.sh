@@ -6,8 +6,13 @@ for v in "${env_vars[@]}"
 do
    if [ -z ${!v} ]; then
       echo "ERROR: Missing environmental variable $v"
+      ERRORS=1
    else
       echo "$v: ${!v}"
    fi
 done
+
+if [ -z $ERRORS ]; then
+   echo "Environment ready!"
+fi
 
