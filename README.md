@@ -31,7 +31,8 @@ SERVICE_INSTANCE_NAME=my-service
 SERVICE_BINDING_NAME=my-binding
 CREDENTIALS_NAME=my-secret
 
-# Check both environments are ready to go
+# Check your environment is ready to go
+./scripts/0-check-environment.sh
 ./scripts/0-check-cf-environment.sh
 ./scripts/0-check-k8s-environment.sh
 ```
