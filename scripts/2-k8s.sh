@@ -6,28 +6,13 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . ${DIR}/resources/demo-magic.sh
 
-# create a namespace for development
-kubectl create ns development
-
-# get the address of the controller
-SVC_CAT_API=$(minikube service -n catalog catalog-catalog-apiserver --url | sed -n 1p)
-echo $SVC_CAT_API
-
-# create a new kubectl context
-kubectl config set-cluster service-catalog --server=$SVC_CAT_API
-kubectl config set-context service-catalog --cluster=service-catalog
-
-BROKER_URL=http://$(cf app $SERVICE_BROKER_APP_NAME | awk '/urls:/{ print $2 }')
-
 # hide the evidence
 clear
 
-# put your stuff here
+# create a namespace for development
+kubectl create ns development
 
-# show no broker has yet been registered
-pe "kubectl --context=service-catalog get brokers,serviceclasses"
-
-clean
+BROKER_URL=http://$(cf app $SERVICE_BROKER_APP_NAME | awk '/urls:/{ print $2 }')
 
 # create the broker secret
 cat >/tmp/k8s-resources/broker-secret.yaml <<EOL
@@ -35,17 +20,25 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: broker-secret
+  namespace: development
 type: Opaque
 data:
-  username: $(echo "$SERVICE_BROKER_USERNAME" | base64)
-  password: $(echo "$SERVICE_BROKER_PASSWORD" | base64)
+  username: $(echo -n "$SERVICE_BROKER_USERNAME" | base64)
+  password: $(echo -n "$SERVICE_BROKER_PASSWORD" | base64)
 EOL
 kubectl create -f /tmp/k8s-resources/broker-secret.yaml
 
+# put your stuff here
+
+# show no broker has yet been registered
+pe "kubectl get clusterservicebrokers,clusterserviceclasses"
+
+clean
+
 # register a broker
 cat >/tmp/k8s-resources/broker.yaml <<EOL
-apiVersion: servicecatalog.k8s.io/v1alpha1
-kind: Broker
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ClusterServiceBroker
 metadata:
   name: $SERVICE_BROKER_NAME
 spec:
@@ -57,39 +50,39 @@ spec:
         name: broker-secret
 EOL
 pe "less /tmp/k8s-resources/broker.yaml"
-pe "kubectl --context=service-catalog create -f /tmp/k8s-resources/broker.yaml"
+pe "kubectl create -f /tmp/k8s-resources/broker.yaml"
 
 clean
 
 # get the service class for the exposed services
-pe "kubectl --context=service-catalog get serviceclasses"
-pe "kubectl --context=service-catalog get serviceclass $SERVICE_NAME -o yaml | less"
+pe "kubectl get clusterserviceclasses"
+pe "kubectl get clusterserviceclasses -o yaml | less"
 
 clean
 
 # create a service instance
 cat >/tmp/k8s-resources/instance.yaml <<EOL
-apiVersion: servicecatalog.k8s.io/v1alpha1
-kind: Instance
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
 metadata:
   name: $SERVICE_INSTANCE_NAME
   namespace: development
 spec:
-  serviceClassName: $SERVICE_NAME
-  planName: $SERVICE_PLAN_NAME
+  clusterServiceClassExternalName: $SERVICE_NAME
+  clusterServicePlanExternalName: $SERVICE_PLAN_NAME
 EOL
 pe "less /tmp/k8s-resources/instance.yaml"
-pe "kubectl --context=service-catalog create -f /tmp/k8s-resources/instance.yaml"
+pe "kubectl create -f /tmp/k8s-resources/instance.yaml"
 
 # get the service instance
-pe "kubectl --context=service-catalog -n development get instances -o yaml | less"
+pe "kubectl -n development get serviceinstances -o yaml | less"
 
 clean
 
 # create a service binding
 cat >/tmp/k8s-resources/binding.yaml <<EOL
-apiVersion: servicecatalog.k8s.io/v1alpha1
-kind: Binding
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBinding
 metadata:
   name: $SERVICE_BINDING_NAME
   namespace: development
@@ -99,10 +92,10 @@ spec:
   secretName: $CREDENTIALS_NAME
 EOL
 pe "less /tmp/k8s-resources/binding.yaml"
-pe "kubectl --context=service-catalog create -f /tmp/k8s-resources/binding.yaml"
+pe "kubectl create -f /tmp/k8s-resources/binding.yaml"
 
 # get the service binding
-pe "kubectl --context=service-catalog -n development get binding  -o yaml | less"
+pe "kubectl -n development get servicebindings  -o yaml | less"
 
 # get the secret
 pe "kubectl get secrets -n development"
@@ -110,8 +103,8 @@ pe "kubectl get secrets -n development $CREDENTIALS_NAME -o yaml | less"
 
 clean
 
-pe "kubectl --context=service-catalog -n development delete binding $SERVICE_BINDING_NAME"
+pe "kubectl -n development delete servicebinding $SERVICE_BINDING_NAME"
 
 # delete the instance
-pe "kubectl --context=service-catalog -n development delete instance $SERVICE_INSTANCE_NAME"
+pe "kubectl -n development delete serviceinstance $SERVICE_INSTANCE_NAME"
 
