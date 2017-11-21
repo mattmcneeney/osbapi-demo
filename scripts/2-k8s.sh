@@ -6,6 +6,9 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . ${DIR}/resources/demo-magic.sh
 
+# create a namespace for development
+pe "kubectl create ns development"
+
 # get the address of the controller
 SVC_CAT_API=$(minikube service -n catalog catalog-catalog-apiserver --url | sed -n 1p)
 echo $SVC_CAT_API
@@ -25,6 +28,19 @@ pe "kubectl --context=service-catalog get brokers,serviceclasses"
 
 clean
 
+# create the broker secret
+cat >/tmp/k8s-resources/broker-secret.yaml <<EOL
+apiVersion: v1
+kind: Secret
+metadata:
+  name: broker-secret
+type: Opaque
+data:
+  username: $(echo "$SERVICE_BROKER_USERNAME" | base64)
+  password: $(echo "$SERVICE_BROKER_PASSWORD" | base64)
+EOL
+kubectl create -f /tmp/k8s-resources/broker-secret.yaml
+
 # register a broker
 cat >/tmp/k8s-resources/broker.yaml <<EOL
 apiVersion: servicecatalog.k8s.io/v1alpha1
@@ -33,6 +49,11 @@ metadata:
   name: $SERVICE_BROKER_NAME
 spec:
   url: $BROKER_URL
+  authInfo:
+    basic:
+      secretRef:
+        namespace: development
+        name: broker-secret
 EOL
 pe "less /tmp/k8s-resources/broker.yaml"
 pe "kubectl --context=service-catalog create -f /tmp/k8s-resources/broker.yaml"
@@ -44,9 +65,6 @@ pe "kubectl --context=service-catalog get serviceclasses"
 pe "kubectl --context=service-catalog get serviceclass $SERVICE_NAME -o yaml | less"
 
 clean
-
-# create a namespace for development
-pe "kubectl create ns development"
 
 # create a service instance
 cat >/tmp/k8s-resources/instance.yaml <<EOL
