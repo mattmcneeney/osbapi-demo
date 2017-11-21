@@ -1,28 +1,32 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 
-echo "Checking k8s environment is clean and ready..."
+# Check that minikube is running
+minikube status | grep "minikube: Running" > /dev/null ||
+(
+   echo "ERROR: minikube is not running"
+   exit 1
+)
+echo "minikube is running"
 
-rm -f /tmp/k8s-resources
+# Check that the catalog-apiserver is running
+kubectl --all-namespaces=true get pods | grep catalog-apiserver | grep Running > /dev/null ||
+(
+   echo "ERROR: catalog-apiserver is not running"
+   exit 1
+)
+echo "catalog-apiserver is running"
+
+# Check that the catalog-controller is running
+kubectl --all-namespaces=true get pods | grep catalog-controller | grep Running > /dev/null ||
+(
+   echo "ERROR: catalog-controller is not running"
+   exit 1
+)
+echo "catalog-controller is running"
+
+# Setup temp resources directory
+rm -rf /tmp/k8s-resources
 mkdir -p /tmp/k8s-resources
 
-#TODO check if minikube is running
-cd $HOME/workspace/service-catalog
-minikube start
-
-#TODO check if helm & service catalog is setup
-#DEPLOY the service-catalog
-#Use helm to setup the components
-helm init
-sleep 30
-helm install charts/catalog --name catalog --namespace catalog
-sleep 30
-
-#FIND service catalog api endpoint 
-SVC_CAT_API=$(minikube service -n catalog catalog-catalog-apiserver --url | sed -n 1p)
-echo $SVC_CAT_API
-
-#CREATE a new kubectl context
-kubectl config set-cluster service-catalog --server=$SVC_CAT_API
-kubectl config set-context service-catalog --cluster=service-catalog
-
 echo "Ready!"
+

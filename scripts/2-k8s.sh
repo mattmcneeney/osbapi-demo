@@ -7,7 +7,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . ${DIR}/resources/demo-magic.sh
 
 # create a namespace for development
-pe "kubectl create ns development"
+kubectl create ns development
 
 # get the address of the controller
 SVC_CAT_API=$(minikube service -n catalog catalog-catalog-apiserver --url | sed -n 1p)
@@ -23,6 +23,7 @@ BROKER_URL=http://$(cf app $SERVICE_BROKER_APP_NAME | awk '/urls:/{ print $2 }')
 clear
 
 # put your stuff here
+
 # show no broker has yet been registered
 pe "kubectl --context=service-catalog get brokers,serviceclasses"
 
