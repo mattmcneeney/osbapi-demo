@@ -10,7 +10,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 clear
 
 # put your stuff here
-BROKER_URL=http://$(cf app $SERVICE_BROKER_APP_NAME | awk '/urls:/{ print $2 }')
+BROKER_URL=http://$(cf app $SERVICE_BROKER_APP_NAME | awk '/routes:/{ print $2 }')
 pe "cf apps"
 
 clean
@@ -19,7 +19,7 @@ pe "cf marketplace"
 
 clean
 
-pe "cf create-service-broker $SERVICE_BROKER_NAME admin ${BROKER_PASSWORD} ${BROKER_URL}"
+pe "cf create-service-broker $SERVICE_BROKER_NAME $SERVICE_BROKER_USERNAME $SERVICE_BROKER_PASSWORD ${BROKER_URL}"
 pe "cf enable-service-access $SERVICE_NAME"
 
 clean

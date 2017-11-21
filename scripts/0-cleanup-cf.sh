@@ -1,4 +1,4 @@
 #!/bin/bash -v
 
-cf delete-service-broker -f overview-broker-demo
+cf delete-service-broker -f $SERVICE_BROKER_NAME
 
