@@ -20,10 +20,6 @@ git clone git@github.com:mattmcneeney/overview-broker.git
 cd overview-broker
 cf push overview-broker-demo
 
-# Update the Kubernetes broker resource YAML with the URL
-# of the service broker you have deployed
-sed -i -e 's/\$URL/YOUR-BROKER-URL/g' ./scripts/resources/overview-broker.yaml
-
 # Edit the .envrc file and populate your environment variables. For example:
 export SERVICE_BROKER_APP_NAME=overview-broker-demo
 export SERVICE_BROKER_NAME=overview-broker-demo
