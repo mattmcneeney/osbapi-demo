@@ -1,29 +1,46 @@
 #!/bin/bash -e
 
-echo "Checking environment is clean and ready..."
+# Check for required environmental variables
+if [ -z "$SERVICE_BROKER_APP_NAME" ]; then
+   echo "ERROR: Missing environmental variable SERVICE_BROKER_APP_NAME" &&
+   exit 1
+fi
+if [ -z "$SERVICE_BROKER_NAME" ]; then
+   echo "ERROR: Missing environmental variable SERVICE_BROKER_NAME" &&
+   exit 1
+fi
+if [ -z "$SERVICE_INSTANCE_NAME" ]; then
+   echo "ERROR: Missing environmental variable SERVICE_INSTANCE_NAME" &&
+   exit 1
+fi
 
-cf apps | grep "spring-broker-demo" > /dev/null ||
+# Check the service broker app is deployed
+cf apps | grep "$SERVICE_BROKER_APP_NAME" > /dev/null ||
 (
-   echo "WARNING: spring-broker-demo app does not exist" &&
+   echo "ERROR: The $SERVICE_BROKER_APP_NAME app does not exist" &&
    exit 1
 )
 
-cf service-brokers | grep "spring-broker" > /dev/null &&
+# Check no service broker already exists
+cf service-brokers | grep "$SERVICE_BROKER_NAME" > /dev/null &&
 (
-   echo "WARNING: spring-broker service broker exists" &&
+   echo "ERROR: The $SERVICE_BROKER_NAME service broker already exists" &&
    exit 1
 )
 
+# Check no service instnace already exists
 cf services | grep "my-service" > /dev/null &&
 (
-   echo "WARNING: my-service service exists" &&
+   echo "ERROR: my-service service exists" &&
    exit 1
 )
 
+# Check we are admin
 cf target | grep -i "User:" | grep "admin" > /dev/null ||
 (
-   echo "WARNING: Not admin"
+   echo "ERROR: Not admin"
    exit 1
 )
 
 echo "Ready!"
+

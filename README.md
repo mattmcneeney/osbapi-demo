@@ -20,6 +20,15 @@ git clone git@github.com:mattmcneeney/overview-broker.git
 cd overview-broker
 cf push overview-broker-demo
 
+# Update the Kubernetes broker resource YAML with the URL
+# of the service broker you have deployed
+sed -i -e 's/\$URL/YOUR-BROKER-URL/g' ./scripts/resources/overview-broker.yaml
+
+# Set your environmental variables, for example:
+SERVICE_BROKER_APP_NAME=overview-broker-demo
+SERVICE_BROKER_NAME=overview-broker-demo
+SERVICE_INSTANCE_NAME=my-service
+
 # Check both environments are ready to go
 ./scripts/0-check-cf-environment.sh
 ./scripts/0-check-k8s-environment.sh

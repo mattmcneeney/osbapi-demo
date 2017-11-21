@@ -3,4 +3,4 @@ kind: Broker
 metadata:
   name: overview-broker
 spec:
-  url: http://overview-broker-cf-summit.matt-lite.cf-app.com
+  url: $URL
