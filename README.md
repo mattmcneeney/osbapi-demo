@@ -28,6 +28,8 @@ sed -i -e 's/\$URL/YOUR-BROKER-URL/g' ./scripts/resources/overview-broker.yaml
 SERVICE_BROKER_APP_NAME=overview-broker-demo
 SERVICE_BROKER_NAME=overview-broker-demo
 SERVICE_INSTANCE_NAME=my-service
+SERVICE_BINDING_NAME=my-binding
+CREDENTIALS_NAME=my-secret
 
 # Check both environments are ready to go
 ./scripts/0-check-cf-environment.sh

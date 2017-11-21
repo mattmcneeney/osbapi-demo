@@ -14,6 +14,8 @@ echo $SVC_CAT_API
 kubectl config set-cluster service-catalog --server=$SVC_CAT_API
 kubectl config set-context service-catalog --cluster=service-catalog
 
+BROKER_URL=http://$(cf app $SERVICE_BROKER_APP_NAME | awk '/urls:/{ print $2 }')
+
 # hide the evidence
 clear
 
@@ -24,14 +26,22 @@ pe "kubectl --context=service-catalog get brokers,serviceclasses"
 clean
 
 # register a broker
-pe "less ${DIR}/resources/overview-broker.yaml"
-pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-broker.yaml"
+cat >/tmp/k8s-resources/broker.yaml <<EOL
+apiVersion: servicecatalog.k8s.io/v1alpha1
+kind: Broker
+metadata:
+  name: overview-broker
+spec:
+  url: $BROKER_URL
+EOL
+pe "less /tmp/k8s-resources/broker.yaml"
+pe "kubectl --context=service-catalog create -f /tmp/k8s-resources/broker.yaml"
 
 clean
 
 # get the service class for the exposed services
 pe "kubectl --context=service-catalog get serviceclasses"
-pe "kubectl --context=service-catalog get serviceclass overview-broker-demo -o yaml | less"
+pe "kubectl --context=service-catalog get serviceclass $SERVICE_BROKER_NAME -o yaml | less"
 
 clean
 
@@ -39,8 +49,18 @@ clean
 pe "kubectl create ns development"
 
 # create a service instance
-pe "less ${DIR}/resources/overview-instance.yaml"
-pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-instance.yaml"
+cat >/tmp/k8s-resources/instance.yaml <<EOL
+apiVersion: servicecatalog.k8s.io/v1alpha1
+kind: Instance
+metadata:
+  name: $SERVICE_INSTANCE_NAME
+  namespace: development
+spec:
+  serviceClassName: $SERVICE_BROKER_NAME
+  planName: $PLAN_NAME
+EOL
+pe "less /tmp/k8s-resources/instance.yaml"
+pe "kubectl --context=service-catalog create -f /tmp/k8s-resources/instance.yaml"
 
 # get the service instance
 pe "kubectl --context=service-catalog -n development get instances -o yaml | less"
@@ -48,19 +68,31 @@ pe "kubectl --context=service-catalog -n development get instances -o yaml | les
 clean
 
 # create a service binding
-pe "less ${DIR}/resources/overview-binding.yaml"
-pe "kubectl --context=service-catalog create -f ${DIR}/resources/overview-binding.yaml"
+cat >/tmp/k8s-resources/binding.yaml <<EOL
+apiVersion: servicecatalog.k8s.io/v1alpha1
+kind: Binding
+metadata:
+  name: $SERVICE_BINDING_NAME
+  namespace: development
+spec:
+  instanceRef:
+    name: $SERVICE_INSTANCE_NAME
+  secretName: $CREDENTIALS_NAME
+EOL
+pe "less /tmp/k8s-resources/binding.yaml"
+pe "kubectl --context=service-catalog create -f /tmp/k8s-resources/binding.yaml"
 
 # get the service binding
 pe "kubectl --context=service-catalog -n development get binding  -o yaml | less"
 
 # get the secret
 pe "kubectl get secrets -n development"
-pe "kubectl get secrets -n development overview-credentials -o yaml | less"
+pe "kubectl get secrets -n development $CREDENTIALS_NAME -o yaml | less"
 
 clean
 
-pe "kubectl --context=service-catalog -n development delete binding overview-binding"
+pe "kubectl --context=service-catalog -n development delete binding $SERVICE_BINDING_NAME"
 
 # delete the instance
-pe "kubectl --context=service-catalog -n development delete instance overview-instance"
+pe "kubectl --context=service-catalog -n development delete instance $SERVICE_INSTANCE_NAME"
+

@@ -1,19 +1,5 @@
 #!/bin/bash -e
 
-# Check for required environmental variables
-if [ -z "$SERVICE_BROKER_APP_NAME" ]; then
-   echo "ERROR: Missing environmental variable SERVICE_BROKER_APP_NAME" &&
-   exit 1
-fi
-if [ -z "$SERVICE_BROKER_NAME" ]; then
-   echo "ERROR: Missing environmental variable SERVICE_BROKER_NAME" &&
-   exit 1
-fi
-if [ -z "$SERVICE_INSTANCE_NAME" ]; then
-   echo "ERROR: Missing environmental variable SERVICE_INSTANCE_NAME" &&
-   exit 1
-fi
-
 # Check the service broker app is deployed
 cf apps | grep "$SERVICE_BROKER_APP_NAME" > /dev/null ||
 (

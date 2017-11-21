@@ -2,6 +2,9 @@
 
 echo "Checking k8s environment is clean and ready..."
 
+rm -f /tmp/k8s-resources
+mkdir -p /tmp/k8s-resources
+
 #TODO check if minikube is running
 cd $HOME/workspace/service-catalog
 minikube start
