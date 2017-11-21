@@ -9,8 +9,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # hide the evidence
 clear
 
-# create a namespace for development
-kubectl create ns development
+# create a namespace
+kubectl create ns $NAMESPACE
 
 BROKER_URL=http://$(cf app $SERVICE_BROKER_APP_NAME | awk '/urls:/{ print $2 }')
 
@@ -20,7 +20,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: broker-secret
-  namespace: development
+  namespace: $NAMESPACE
 type: Opaque
 data:
   username: $(echo -n "$SERVICE_BROKER_USERNAME" | base64)
@@ -46,7 +46,7 @@ spec:
   authInfo:
     basic:
       secretRef:
-        namespace: development
+        namespace: $NAMESPACE
         name: broker-secret
 EOL
 pe "less /tmp/k8s-resources/broker.yaml"
@@ -66,7 +66,7 @@ apiVersion: servicecatalog.k8s.io/v1beta1
 kind: ServiceInstance
 metadata:
   name: $SERVICE_INSTANCE_NAME
-  namespace: development
+  namespace: $NAMESPACE
 spec:
   clusterServiceClassExternalName: $SERVICE_NAME
   clusterServicePlanExternalName: $SERVICE_PLAN_NAME
@@ -75,7 +75,7 @@ pe "less /tmp/k8s-resources/instance.yaml"
 pe "kubectl create -f /tmp/k8s-resources/instance.yaml"
 
 # get the service instance
-pe "kubectl -n development get serviceinstances -o yaml | less"
+pe "kubectl -n $NAMESPACE get serviceinstances -o yaml | less"
 
 clean
 
@@ -85,7 +85,7 @@ apiVersion: servicecatalog.k8s.io/v1beta1
 kind: ServiceBinding
 metadata:
   name: $SERVICE_BINDING_NAME
-  namespace: development
+  namespace: $NAMESPACE
 spec:
   instanceRef:
     name: $SERVICE_INSTANCE_NAME
@@ -95,16 +95,16 @@ pe "less /tmp/k8s-resources/binding.yaml"
 pe "kubectl create -f /tmp/k8s-resources/binding.yaml"
 
 # get the service binding
-pe "kubectl -n development get servicebindings  -o yaml | less"
+pe "kubectl -n $NAMESPACE get servicebindings  -o yaml | less"
 
 # get the secret
-pe "kubectl get secrets -n development"
-pe "kubectl get secrets -n development $CREDENTIALS_NAME -o yaml | less"
+pe "kubectl get secrets -n $NAMESPACE"
+pe "kubectl get secrets -n $NAMESPACE $CREDENTIALS_NAME -o yaml | less"
 
 clean
 
-pe "kubectl -n development delete servicebinding $SERVICE_BINDING_NAME"
+pe "kubectl -n $NAMESPACE delete servicebinding $SERVICE_BINDING_NAME"
 
 # delete the instance
-pe "kubectl -n development delete serviceinstance $SERVICE_INSTANCE_NAME"
+pe "kubectl -n $NAMESPACE delete serviceinstance $SERVICE_INSTANCE_NAME"
 
