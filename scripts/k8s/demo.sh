@@ -54,9 +54,10 @@ pe "kubectl create -f /tmp/k8s-resources/broker.yaml"
 
 clean
 
-# get the service class for the exposed services
+# get the service broker, then service class, then plans
+pe "kubectl get clusterservicebrokers"
 pe "kubectl get clusterserviceclasses"
-pe "kubectl get clusterserviceclasses -o yaml | less"
+pe "kubectl get clusterserviceplans"
 
 clean
 
@@ -98,8 +99,8 @@ pe "kubectl create -f /tmp/k8s-resources/binding.yaml"
 pe "kubectl -n $NAMESPACE get servicebindings -o yaml | less"
 
 # get the secret
-pe "kubectl get secrets -n $NAMESPACE"
-pe "kubectl get secrets -n $NAMESPACE $CREDENTIALS_NAME -o yaml | less"
+pe "kubectl -n $NAMESPACE get secrets"
+pe "kubectl -n $NAMESPACE get secrets $CREDENTIALS_NAME -o yaml | less"
 
 clean
 
