@@ -4,7 +4,7 @@
 # include the magic
 ########################
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. ${DIR}/resources/demo-magic.sh
+. ${DIR}/../resources/demo-magic.sh
 
 # hide the evidence
 clear
