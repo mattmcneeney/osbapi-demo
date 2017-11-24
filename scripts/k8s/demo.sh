@@ -31,7 +31,7 @@ kubectl create -f /tmp/k8s-resources/broker-secret.yaml
 # put your stuff here
 
 # show no broker has yet been registered
-pe "kubectl get clusterservicebrokers,clusterserviceclasses"
+pe "kubectl get clusterservicebrokers"
 
 clean
 
