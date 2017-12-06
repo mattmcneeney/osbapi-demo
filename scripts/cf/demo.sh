@@ -5,7 +5,6 @@
 ########################
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . ${DIR}/../resources/demo-magic.sh
-. ${DIR}/../resources/badge.sh cf
 
 # put your stuff here
 BROKER_URL=http://$(cf app $SERVICE_BROKER_APP_NAME | awk '/routes:/{ print $2 }')
