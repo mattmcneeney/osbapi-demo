@@ -22,7 +22,7 @@ cf service-brokers | grep "$SERVICE_BROKER_NAME" > /dev/null &&
    echo "ERROR: The $SERVICE_BROKER_NAME service broker already exists"
    exit 1
 )
-echo "The $SERVICE_BROKER_NAME service broker exists"
+echo "The $SERVICE_BROKER_NAME service broker doesn't exist"
 
 # Check no service instnace already exists
 cf services | grep "$SERVICE_INSTANCE_NAME" > /dev/null &&
