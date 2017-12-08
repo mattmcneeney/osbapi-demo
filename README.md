@@ -27,7 +27,7 @@ source .envrc
 
 # If you're setting up minikube or the service-catalog project for the first
 # time, then this setup script may help you get up and running:
-./scripts/k8s/setup-env.sh
+./scripts/k8s/setup.sh
 
 # Check your environments are ready to go
 ./scripts/cf/check-env.sh
