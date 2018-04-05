@@ -56,8 +56,8 @@ clean
 
 # get the service broker, then service class, then plans
 pe "kubectl get clusterservicebrokers"
-pe "kubectl get clusterserviceclasses"
-pe "kubectl get clusterserviceplans"
+pe "kubectl get clusterserviceclasses -o=custom-columns=NAME:.spec.externalName"
+pe "kubectl get clusterserviceplans -o=custom-columns=NAME:.spec.externalName"
 
 clean
 
