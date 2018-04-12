@@ -42,6 +42,12 @@ enter to print and then execute the next command in each script.
 ./scripts/k8s/demo.sh
 ```
 
+After running the CF demo, you can also show how service instances can be shared
+across spaces in CF:
+```
+./scripts/cf/demo-instance-sharing.sh
+```
+
 ### Cleanup
 ```
 ./scripts/cf/cleanup.sh

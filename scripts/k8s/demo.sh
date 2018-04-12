@@ -108,4 +108,3 @@ pe "kubectl -n $NAMESPACE delete servicebinding $SERVICE_BINDING_NAME"
 
 # delete the instance
 pe "kubectl -n $NAMESPACE delete serviceinstance $SERVICE_INSTANCE_NAME"
-

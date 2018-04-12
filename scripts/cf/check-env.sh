@@ -24,7 +24,7 @@ cf service-brokers | grep "$SERVICE_BROKER_NAME" > /dev/null &&
 )
 echo "The $SERVICE_BROKER_NAME service broker doesn't exist"
 
-# Check no service instnace already exists
+# Check no service instance already exists
 cf services | grep "$SERVICE_INSTANCE_NAME" > /dev/null &&
 (
    echo "ERROR: The $SERVICE_INSTANCE_NAME service instance already exists"
@@ -41,4 +41,3 @@ cf target | grep -i "User:" | grep "admin" > /dev/null ||
 echo "You are admin :)"
 
 echo "Ready!"
-

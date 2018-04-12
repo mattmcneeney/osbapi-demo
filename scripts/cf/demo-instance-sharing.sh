@@ -12,16 +12,14 @@ BROKER_URL=http://$(cf app $SERVICE_BROKER_APP_NAME | awk '/routes:/{ print $2 }
 # hide the evidence
 clear
 
-pe "cf marketplace"
+pe "cf feature-flags"
+pe "cf enable-feature-flag service_instance_sharing"
 
 clean
 
-pe "cf create-service-broker $SERVICE_BROKER_NAME $SERVICE_BROKER_USERNAME $SERVICE_BROKER_PASSWORD ${BROKER_URL}"
-pe "cf enable-service-access $SERVICE_NAME"
-
-clean
-
-pe "cf marketplace"
+pe "cf create-space dev1"
+pe "cf create-space dev2"
+pe "cf target -s dev1"
 
 clean
 
@@ -30,10 +28,12 @@ pe "cf services"
 
 clean
 
-pe "cf create-service-key $SERVICE_INSTANCE_NAME $CREDENTIALS_NAME"
-pe "cf service-key $SERVICE_INSTANCE_NAME $CREDENTIALS_NAME"
+pe "cf share-service $SERVICE_INSTANCE_NAME -s dev2"
+pe "cf target -s dev2"
+pe "cf services"
 
 clean
 
-pe "cf delete-service-key -f $SERVICE_INSTANCE_NAME $CREDENTIALS_NAME"
+pe "cf target -s dev1"
+pe "cf unshare-service -f $SERVICE_INSTANCE_NAME -s dev2"
 pe "cf delete-service -f $SERVICE_INSTANCE_NAME"

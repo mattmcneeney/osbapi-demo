@@ -11,7 +11,6 @@ kubectl create clusterrolebinding tiller-cluster-admin \
 
 # The helm install will fail if we run this immediately. Give tiller
 # some time to get ready...
-sleep 30
+sleep 60
 helm install svc-cat/catalog \
     --name catalog --namespace catalog --set insecure=true
-

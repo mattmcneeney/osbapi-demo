@@ -37,4 +37,3 @@ rm -rf /tmp/k8s-resources
 mkdir -p /tmp/k8s-resources
 
 echo "Ready!"
-
