@@ -29,8 +29,13 @@ pe "cf services"
 clean
 
 pe "cf share-service $SERVICE_INSTANCE_NAME -s dev2"
+pe "cf service $SERVICE_INSTANCE_NAME"
+
+clean
+
 pe "cf target -s dev2"
 pe "cf services"
+pe "cf service $SERVICE_INSTANCE_NAME"
 
 clean
 
