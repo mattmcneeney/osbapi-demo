@@ -58,6 +58,11 @@ pe "open http://$(cf app $TARGET_APP | awk '/routes:/{ print $2 }')"
 clean
 
 pe "cf target -o $ORG -s $SOURCE_SPACE"
+pe "cf service $SERVICE_INSTANCE_NAME"
+
+clean
+
 pe "cf unshare-service -f $SERVICE_INSTANCE_NAME -o $ORG -s $TARGET_SPACE"
 pe "cf unbind-service $SOURCE_APP $SERVICE_INSTANCE_NAME"
 pe "cf delete-service -f $SERVICE_INSTANCE_NAME"
+
